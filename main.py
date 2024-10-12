@@ -53,9 +53,7 @@ def main():
     max_weight = 20
     max_value = 100
     for n in range(5, 50, 5):
-        # items, capacity = generate_knapsack_example(n, max_weight, max_value)
-        items = [(10,50), (14,100), (7,20), (5, 19), (2, 50)]
-        capacity = 20
+        items, capacity = generate_knapsack_example(n, max_weight, max_value)
         
         print("#######################################################")
         print(f'Generated Knapsack Input: size {n}')
