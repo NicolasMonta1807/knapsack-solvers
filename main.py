@@ -20,8 +20,17 @@ def knapsack_combinations(items, capacity):
 
     return max_value, best_combination
 
-def knapsack_heuristic(items, capacity):
-    items = sorted(items, key=lambda x: x[1], reverse=True)
+def knapsack_heuristic(items, capacity, heuristic=0):
+    match heuristic:
+        case 0:
+            # Value per weight ratio
+            items = sorted(items, key=lambda x: x[1] / x[0], reverse=True)
+        case 1:
+            # Lesser weight
+            items = sorted(items, key=lambda x: x[0])
+        case 2:
+            # Higher value
+            items = sorted(items, key=lambda x: x[1], reverse=True)
     
     total_value = 0
     total_weight = 0
@@ -37,7 +46,6 @@ def knapsack_heuristic(items, capacity):
 
 def generate_knapsack_example(num_items, max_weight, max_value):
     """Generate a random knapsack problem instance.
-
     """
     items = []
     for _ in range(num_items):
@@ -70,7 +78,7 @@ def main():
         
         print("\n")
 
-        print("--------------------- HEURISTIC ---------------------")
+        print("--------------------- HEURISTIC: VW ---------------------")
         time_init = time.perf_counter_ns()
         max_value_h, best_combination_h = knapsack_heuristic(items, capacity)
         time_end = time.perf_counter_ns()
@@ -78,10 +86,27 @@ def main():
         print(f"Solved in {time_end - time_init:.4f} nanoseconds")
         print("-----------------------------------------------------")
         
-        diff = max_value_c != max_value_h
-        print(f"Result differs: {diff}")
+        print("\n")
+        
+        print("--------------------- HEURISTIC: LW ---------------------")
+        time_init = time.perf_counter_ns()
+        max_value_h, best_combination_h = knapsack_heuristic(items, capacity, 1)
+        time_end = time.perf_counter_ns()
+        print(f"Best value possible: {max_value_h} with items {best_combination_h}")
+        print(f"Solved in {time_end - time_init:.4f} nanoseconds")
         print("-----------------------------------------------------")
-
+        
+        print("\n")
+        
+        print("--------------------- HEURISTIC: HV ---------------------")
+        time_init = time.perf_counter_ns()
+        max_value_h, best_combination_h = knapsack_heuristic(items, capacity, 2)
+        time_end = time.perf_counter_ns()
+        print(f"Best value possible: {max_value_h} with items {best_combination_h}")
+        print(f"Solved in {time_end - time_init:.4f} nanoseconds")
+        print("-----------------------------------------------------")
+        
+        print("\n")
 
 if __name__ == "__main__":
     main()
